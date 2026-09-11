@@ -1,0 +1,416 @@
+html {
+    height: 100vh;
+    box-shadow: inset 0px 0px 20px 0px rgb(0,0,0,0.1);
+    touch-action: none;
+}
+
+body {
+    overflow: hidden;
+    background-color: var(--app-background-color);
+    margin: 0;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+:root {
+    --app-background-color: #FAF6F0;
+
+    --app-height: 100svh;
+    --app-padding: 8px;
+
+    --timenav-height-frac: 0.1;
+    --content-panel-total-height-frac: 0.8;
+    --header-container-height-frac: calc(0.18 * var(--content-panel-total-height-frac));
+    --eras-layout-upper-container-height-frac: calc(0.7 * (var(--content-panel-total-height-frac) - var(--header-container-height-frac)));
+    --eras-layout-lower-container-height-frac: calc(var(--content-panel-total-height-frac) - var(--header-container-height-frac) - var(--eras-layout-upper-container-height-frac));
+    --content-panel-total-height: calc(var(--app-height) * var(--content-panel-total-height-frac));
+    --timenav-height: calc(var(--app-height) * var(--timenav-height-frac));
+    --header-container-height: calc(var(--app-height) * var(--header-container-height-frac));
+    --eras-layout-upper-container-height: calc(var(--app-height) * var(--eras-layout-upper-container-height-frac));
+    --eras-layout-lower-container-height: calc(var(--app-height) * var(--eras-layout-lower-container-height-frac));
+}
+
+.app {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: var(--app-height);
+    box-sizing: border-box;
+    padding: var(--app-padding);
+}
+
+/* ================ top level containers ======================== */
+
+.time-nav-container {
+    z-index:2;
+    width: 100%;
+    height: var(--timenav-height);
+}
+
+.header-container {
+    width: 100%;
+    height: var(--header-container-height);
+    position:relative;
+}
+
+.eras-layout-upper-container {
+    width: 100%;
+    height: var(--eras-layout-upper-container-height);
+}
+
+.eras-layout-lower-container {
+    width: 100%;
+    height: var(--eras-layout-lower-container-height);
+}
+
+.overview-layout-container {
+    z-index: 1;
+    position: absolute;
+    left: var(--app-padding);
+    right: var(--app-padding);
+    top: calc(var(--app-padding) + var(--header-container-height));
+    height: calc(var(--eras-layout-upper-container-height) + var(--timenav-height) + var(--eras-layout-lower-container-height));
+}
+
+.detailed-layout-container {
+    position: fixed;
+    z-index: 3;
+    overflow: hidden;
+    left: var(--app-padding);
+    right: var(--app-padding);
+    top: calc(var(--app-padding) + var(--header-container-height));
+    height: calc(var(--app-height) * (var(--content-panel-total-height-frac) - var(--header-container-height-frac)));
+}
+
+/* ========================== images loader ============================ */
+
+.high-quality-images-loader {
+    position: fixed;
+    z-index: 8000;
+    right: 16px;
+    bottom: 16px;
+    width: 240px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    direction: rtl;
+    background: rgba(47, 47, 47, 0.88);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    color: rgba(255, 255, 255, 0.9);
+    font-family: SimplerPro_Alte, system-ui, sans-serif;
+}
+
+.high-quality-images-loader-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+
+.high-quality-images-loader-percent {
+    direction: ltr;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.high-quality-images-loader-progress-track {
+    width: 100%;
+    height: 3px;
+    margin-top: 7px;
+    background: rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+}
+
+.high-quality-images-loader-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.82);
+}
+
+.reload-shortcut-button {
+    position: fixed;
+    left: -1px;
+    bottom: -1px;
+    z-index: 7900;
+    max-width: calc(100vw - 32px);
+    min-height: 36px;
+    padding: 7px 12px;
+    box-sizing: border-box;
+    direction: rtl;
+    cursor: pointer;
+    background: rgb(0 0 0 / 0.05);
+    border: 1px solid rgb(0 0 0 / 0.1);
+    color: rgb(0 0 0 / 0.6);
+    font-family: SimplerPro_Alte, system-ui, sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.reload-error {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 32px;
+    box-sizing: border-box;
+    direction: rtl;
+    text-align: center;
+    background: rgba(47, 47, 47, 0.94);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: SimplerPro_Alte, system-ui, sans-serif;
+}
+
+.reload-error-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ffdddd;
+}
+
+.reload-error-message {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.reload-error-countdown {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.74);
+}
+
+.reload-error-button {
+    min-width: 128px;
+    min-height: 42px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: #ffdddd;
+    border: 1px solid #ffdddd;
+    color: #2f2f2f;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* ============================== inactivity timer ============================== */
+
+.inactivity-timer-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    box-sizing: border-box;
+    direction: rtl;
+    text-align: center;
+    background: rgba(47, 47, 47, 0.28);
+    color: #894240;
+    font-family: SimplerPro_Alte, system-ui, sans-serif;
+}
+
+.inactivity-timer-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+    width: min(700px, 100%);
+    min-height: 260px;
+    padding: 42px 48px;
+    box-sizing: border-box;
+    background: #faf6f0;
+    border: 1px solid rgba(137, 66, 64, 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+.inactivity-timer-title {
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.inactivity-timer-message {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.inactivity-timer-ring {
+    width: 120px;
+    height: 120px;
+    overflow: visible;
+}
+
+.inactivity-timer-ring-track,
+.inactivity-timer-ring-progress {
+    stroke-width: 10px;
+}
+
+.inactivity-timer-ring-track {
+    stroke: rgba(137, 66, 64, 0.16);
+}
+
+.inactivity-timer-ring-progress {
+    stroke: rgba(137, 66, 64, 0.82);
+    stroke-linecap: round;
+}
+
+.inactivity-timer-countdown {
+    margin: 0;
+    font-size: 1.8rem;
+    color: rgba(137, 66, 64, 0.74);
+}
+
+.inactivity-timer-cancel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    min-height: 52px;
+    padding: 10px 22px;
+    cursor: pointer;
+    background: transparent;
+    border-color: var(--timenav-controls-primary-accent-color);
+    border-style: solid;
+    border-width: 1px 1px 3px 1px;
+    color: var(--timenav-controls-primary-accent-color);
+    box-shadow: 0px -1px 4px -2px rgba(0 0 0 / 30%);
+    font: inherit;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.inactivity-timer-cancel.pressed {
+    top: 1px;
+    border-bottom-width: 2px;
+    box-shadow: inset 0px 0px 8px -3px rgba(0 0 0 / 25%);
+}
+
+.inactivity-timer-cancel:disabled {
+    cursor: default;
+    border-color: var(--timenav-accent-color-disabled);
+    color: var(--timenav-accent-color-disabled);
+    box-shadow: none;
+}
+
+/* ================================== feature flags dashboard ========================= */
+
+.feature-flags-dashboard-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    background: rgba(47, 47, 47, 0.64);
+}
+
+.feature-flags-dashboard-panel {
+    width: min(650px, 100%);
+    padding: 18px;
+    box-sizing: border-box;
+    direction: ltr;
+    background: #faf6f0;
+    border: 1px solid rgba(137, 66, 64, 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+    font-family: SimplerPro_Alte, system-ui, sans-serif;
+}
+
+.feature-flags-dashboard-header {
+    margin-bottom: 14px;
+    color: #894240;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.feature-flags-dashboard-flags {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.feature-flags-dashboard-flag {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(137, 66, 64, 0.25);
+}
+
+.feature-flags-dashboard-flag-label {
+    color: #894240;
+    font-size: 1rem;
+}
+
+.feature-flags-dashboard-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 44px;
+    height: 24px;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: rgba(137, 66, 64, 0.18);
+    border: 1px solid rgba(137, 66, 64, 0.35);
+    border-radius: 999px;
+}
+
+.feature-flags-dashboard-switch-knob {
+    position: absolute;
+    left: 4px;
+    width: 16px;
+    height: 16px;
+    background: #faf6f0;
+    border: 1px solid rgba(137, 66, 64, 0.35);
+    border-radius: 50%;
+}
+
+.feature-flags-dashboard-switch-enabled {
+    background: rgba(199, 33, 39, 0.18);
+    border-color: rgba(199, 33, 39, 0.5);
+}
+
+.feature-flags-dashboard-switch-enabled .feature-flags-dashboard-switch-knob {
+    left: 21px;
+    border-color: rgba(199, 33, 39, 0.5);
+}
+
+.feature-flags-dashboard-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.feature-flags-dashboard-action {
+    min-width: 72px;
+    min-height: 36px;
+    padding: 6px 12px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid rgba(137, 66, 64, 0.45);
+    color: #894240;
+    font: inherit;
+}
+
+.feature-flags-dashboard-action-primary {
+    background: #894240;
+    border-color: #894240;
+    color: #faf6f0;
+}

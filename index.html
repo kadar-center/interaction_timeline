@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Timeline</title>
+    <link rel="icon" type="image/png" href="favicon.ico">
+</head>
+<body>
+  <div id="app"></div>
+  <!-- first, start the loader -->
+  <link id="loader-styles" rel="stylesheet" href="src/Loader.css">
+  <script src="src/Loader.js"></script>
+
+  <!-- preload fonts -->
+  <link rel="preload" href="assets/fonts/EditorSerif-Book.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/EditorSerif-BookItalic.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/EditorSerif-Bold.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/EditorSerif-BoldItalic.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/SimplerPro_Alte-Regular.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/SimplerPro_Alte-Bold.woff2" as="font"  crossorigin>
+  <link rel="preload" href="assets/fonts/SimplerPro_Alte-SemiBold.woff2" as="font"  crossorigin>
+  <link rel="preload" href="assets/fonts/SimplerPro_Alte-Black.woff2" as="font" crossorigin>
+  <link rel="preload" href="assets/fonts/MaterialSymbolsOutlined-Regular.woff2" as="font" crossorigin>
+
+  <!-- load libraries -->
+  <script src="lib/d3/d3.v7.js"></script>                          <!-- d3 -->
+  <script src="lib/sqlite-wasm/sqlite3.js"></script>               <!-- sqlite -->
+  <link rel="stylesheet" href="lib/leader-line/leader-line.css">   <!-- leader-line dependency -->
+  <script src="lib/leader-line/defs.js"></script>                  <!-- leader-line dependency -->
+  <script src="lib/leader-line/anim-event.js"></script>            <!-- leader-line dependency -->
+  <script src="lib/leader-line/anim.js"></script>                  <!-- leader-line dependency -->
+  <script src="lib/leader-line/path-data-polyfill.js"></script>    <!-- leader-line dependency -->
+  <script src="lib/leader-line/leader-line.js"></script>           <!-- leader-line -->
+
+  <!-- load the app -->
+  <link rel="stylesheet" href="src/Fonts.css">
+  <link rel="stylesheet" href="src/App.css">
+  <link rel="stylesheet" href="src/content-panel/ContentPanel.css">
+  <link rel="stylesheet" href="src/time-nav/TimeNav.css">
+  <script src="src/App.min.js"></script>
+</body>
+</html>
